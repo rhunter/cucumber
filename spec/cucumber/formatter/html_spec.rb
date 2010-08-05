@@ -239,6 +239,22 @@ module Cucumber
 
           it { @doc.css('.embed img').first.attributes['src'].to_s.should == "snapshot.jpeg" }
         end
+
+        describe "with a step that embeds a plain text file" do
+          define_steps do
+            When(/a step attaches a text file/) { embed('example.txt', 'text/plain') }
+          end
+
+          define_feature(<<-FEATURE)
+          Feature: 
+            Scenario:
+              When a step attaches a text file
+            FEATURE
+
+          it { @doc.css('.embed a').first.attributes['href'].to_s.should == "example.txt" }
+          it { @doc.css('.embed a').first.attributes['type'].to_s.should == "text/plain" }
+          it { @doc.css('.embed a').first.text.to_s.should == "Embedded attachment" }
+        end
         
         describe "with an undefined Given step then an undefined And step" do
           define_feature(<<-FEATURE)

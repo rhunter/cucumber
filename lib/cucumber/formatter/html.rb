@@ -26,6 +26,14 @@ module Cucumber
         case(mime_type)
         when /^image\/(png|gif|jpg|jpeg)/
           embed_image(file)
+        else
+          embed_file(file, mime_type)
+        end
+      end
+
+      def embed_file(file, mime_type)
+        @builder.span :class => 'embed' do
+          @builder.a "Embedded attachment", :href => file, :type => mime_type
         end
       end
 
